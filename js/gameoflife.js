@@ -9,13 +9,22 @@ function same([x, y], [j, k]) {
 
 // The game state to search for `cell` is passed as the `this` value of the function.
 function contains(cell) {
-  return this.some((c) => same(c, cell));
-};
+  let inside = false;
+
+  const arr = [...this];
+
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][0] === cell[0] && arr[i][1] === cell[1]) {
+      inside = true;
+    }
+  }
+
+  return inside;
+}
 
 const printCell = (cell, state) => {
-  if (contains.call(state, cell))
-    return '\u25A3';
-  return '\u25A2';
+  const isContained = contains.call(state, cell);
+  return isContained ? "\u25A3" : "\u25A2";
 };
 
 const corners = (state = []) => {
@@ -41,7 +50,6 @@ const corners = (state = []) => {
         bottomLeft[1] = state[i][1];
       }
     }
-
     return {
       topRight: [...topRight],
       bottomLeft: [...bottomLeft],
